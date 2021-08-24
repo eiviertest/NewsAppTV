@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainFragment extends BrowseFragment implements OnItemViewClickedListener {
-    private List<Video> mVideos = new ArrayList<>();
+    private List<Noticia> mNoticias = new ArrayList<>();
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -29,16 +29,16 @@ public class MainFragment extends BrowseFragment implements OnItemViewClickedLis
         loadData();
         loadRows();
         setOnItemViewClickedListener( this );
-    }
-
-    private void loadData() {
-        String json = Utils.loadJSONFromResource( getActivity(), R.raw.videos );
-        Type collection = new TypeToken<ArrayList<Video>>(){}.getType();
-        Gson gson = new Gson();
-        mVideos = gson.fromJson( json, collection );
         setTitle("UTNG Movies Player");
         setHeadersState( HEADERS_ENABLED );
         setHeadersTransitionOnBackEnabled( true );
+    }
+
+    private void loadData() {
+        String json = Utils.loadJSONFromResource( getActivity(), R.raw.noticias);
+        Type collection = new TypeToken<ArrayList<Noticia>>(){}.getType();
+        Gson gson = new Gson();
+        mNoticias = gson.fromJson( json, collection );
     }
 
     private void loadRows() {
@@ -52,7 +52,7 @@ public class MainFragment extends BrowseFragment implements OnItemViewClickedLis
 
         for( String category : categories ) {
             ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter( presenter );
-            for( Video movie : mVideos ) {
+            for( Noticia movie : mNoticias ) {
                 if( category.equalsIgnoreCase( movie.getCategory() ) )
                     listRowAdapter.add( movie );
             }
@@ -65,13 +65,13 @@ public class MainFragment extends BrowseFragment implements OnItemViewClickedLis
     }
 
     private List<String> getCategories() {
-        if( mVideos == null )
+        if( mNoticias == null )
             return null;
 
         List<String> categories = new ArrayList<String>();
-        for( Video movie : mVideos ) {
-            if( !categories.contains( movie.getCategory() ) ) {
-                categories.add( movie.getCategory() );
+        for( Noticia noticia : mNoticias ) {
+            if( !categories.contains( noticia.getCategory() ) ) {
+                categories.add( noticia.getCategory() );
             }
         }
 
@@ -80,10 +80,10 @@ public class MainFragment extends BrowseFragment implements OnItemViewClickedLis
 
     @Override
     public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder rowViewHolder, Row row) {
-        if (item instanceof Video) {
-            Video video = (Video) item;
-            Intent intent = new Intent(getActivity(), VideoDetailsActivity.class);
-            intent.putExtra(VideoDetailsFragment.EXTRA_VIDEO, video);
+        if (item instanceof Noticia) {
+            Noticia noticia = (Noticia) item;
+            Intent intent = new Intent(getActivity(), NoticiaDetailsActivity.class);
+            intent.putExtra(NoticiaDetailsFragment.EXTRA_NOTICIA, noticia);
             startActivity(intent);
         }
     }

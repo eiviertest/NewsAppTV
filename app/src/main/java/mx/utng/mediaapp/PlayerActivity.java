@@ -5,34 +5,38 @@ import android.os.Bundle;
 import android.widget.VideoView;
 
 public class PlayerActivity extends Activity implements PlayerControlsFragment.PlayerControlsListener {
-    private VideoView mVideoView;
-    private Video mVideo;
+    private VideoView mNoticiaView;
+    private Noticia mNoticia;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+        mNoticiaView = (VideoView) findViewById( R.id.video_view );
+        mNoticia = (Noticia) getIntent().getSerializableExtra( NoticiaDetailsFragment.
+                EXTRA_NOTICIA );
+        mNoticiaView.setVideoPath( mNoticia.getVideoUrl() );
 
         initViews();
         initVideoPlayer();
     }
 
     private void initViews() {
-        mVideoView = (VideoView) findViewById( R.id.video_view );
+        mNoticiaView = (VideoView) findViewById( R.id.video_view );
     }
 
     private void initVideoPlayer() {
-        mVideo = (Video) getIntent().getSerializableExtra( VideoDetailsFragment.EXTRA_VIDEO );
-        mVideoView.setVideoPath( mVideo.getVideoUrl() );
+        mNoticia = (Noticia) getIntent().getSerializableExtra( NoticiaDetailsFragment.EXTRA_NOTICIA );
+        mNoticiaView.setVideoPath( mNoticia.getVideoUrl() );
     }
 
     @Override
     public void play() {
-        mVideoView.start();
+        mNoticiaView.start();
     }
 
     @Override
     public void pause() {
-        mVideoView.pause();
+        mNoticiaView.pause();
     }
 }

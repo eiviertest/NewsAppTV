@@ -2,7 +2,7 @@ package mx.utng.mediaapp;
 
 import java.io.Serializable;
 
-public class Video implements Serializable {
+public class Noticia implements Serializable {
     private String title;
     private String description;
     private String videoUrl;
@@ -10,7 +10,7 @@ public class Video implements Serializable {
     private String poster;
     @Override
     public String toString() {
-        return "Video {" +
+        return "Noticia {" +
                 "title=\'" + title + "\'" +
                 ", description=\'" + description + "\'" +
                 ", videoUrl=\'" + videoUrl + "\'" +

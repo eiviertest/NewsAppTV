@@ -38,14 +38,14 @@ public class CardPresenter extends Presenter {
 
     @Override
     public void onBindViewHolder(Presenter.ViewHolder viewHolder, Object item) {
-        Video video = (Video) item;
+        Noticia noticia = (Noticia) item;
 
-        if ( !TextUtils.isEmpty(video.getPoster()) ) {
-            ((ViewHolder) viewHolder).mCardView.setTitleText(video.getTitle());
+        if ( !TextUtils.isEmpty(noticia.getPoster()) ) {
+            ((ViewHolder) viewHolder).mCardView.setTitleText(noticia.getTitle());
             ((ViewHolder) viewHolder).mCardView.setMainImageDimensions(
                     210,
                     210 );
-            ( (ViewHolder) viewHolder ).updateCardViewImage( ( (ViewHolder) viewHolder ).getCardView().getContext(), video.getPoster() );
+            ( (ViewHolder) viewHolder ).updateCardViewImage( ( (ViewHolder) viewHolder ).getCardView().getContext(), noticia.getPoster() );
         }
     }
 

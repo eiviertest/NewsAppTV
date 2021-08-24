@@ -3,7 +3,7 @@ package mx.utng.mediaapp;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.leanback.app.PlaybackSupportFragment;
+import androidx.leanback.app.PlaybackFragment;
 import androidx.leanback.widget.AbstractDetailsDescriptionPresenter;
 import androidx.leanback.widget.Action;
 import androidx.leanback.widget.ArrayObjectAdapter;
@@ -15,7 +15,7 @@ import androidx.leanback.widget.OnActionClickedListener;
 import androidx.leanback.widget.PlaybackControlsRow;
 import androidx.leanback.widget.PlaybackControlsRowPresenter;
 
-public class PlayerControlsFragment extends PlaybackSupportFragment implements OnActionClickedListener {
+public class PlayerControlsFragment extends PlaybackFragment implements OnActionClickedListener {
 
     public interface PlayerControlsListener {
         void play();
@@ -23,7 +23,7 @@ public class PlayerControlsFragment extends PlaybackSupportFragment implements O
     }
 
     private PlayerControlsListener mControlsCallback;
-    private Video mVideo;
+    private Noticia mNoticia;
 
     private ArrayObjectAdapter mRowsAdapter;
     private ArrayObjectAdapter mPrimaryActionsAdapter;
@@ -45,11 +45,11 @@ public class PlayerControlsFragment extends PlaybackSupportFragment implements O
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setBackgroundType(PlaybackSupportFragment.BG_LIGHT);
+        setBackgroundType(PlaybackFragment.BG_LIGHT);
         setFadingEnabled(false);
 
         mControlsCallback = (PlayerControlsListener) getActivity();
-        mVideo = (Video) getActivity().getIntent().getSerializableExtra(VideoDetailsFragment.EXTRA_VIDEO);
+        mNoticia = (Noticia) getActivity().getIntent().getSerializableExtra(NoticiaDetailsFragment.EXTRA_NOTICIA);
 
         setupPlaybackControlsRow();
         setupPresenter();
@@ -62,7 +62,7 @@ public class PlayerControlsFragment extends PlaybackSupportFragment implements O
     }
 
     private void setupPlaybackControlsRow() {
-        mPlaybackControlsRow = new PlaybackControlsRow( mVideo );
+        mPlaybackControlsRow = new PlaybackControlsRow( mNoticia );
         ControlButtonPresenterSelector presenterSelector = new ControlButtonPresenterSelector();
         mPrimaryActionsAdapter = new ArrayObjectAdapter(presenterSelector);
         mSecondaryActionsAdapter = new ArrayObjectAdapter(presenterSelector);
@@ -133,7 +133,7 @@ public class PlayerControlsFragment extends PlaybackSupportFragment implements O
     static class DescriptionPresenter extends AbstractDetailsDescriptionPresenter {
         @Override
         protected void onBindDescription(ViewHolder viewHolder, Object item) {
-            viewHolder.getTitle().setText(((Video) item).getTitle());
+            viewHolder.getTitle().setText(((Noticia) item).getTitle());
         }
     }
 }

@@ -32,14 +32,14 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VideoDetailsFragment extends DetailsFragment
+public class NoticiaDetailsFragment extends DetailsFragment
         implements OnItemViewClickedListener, OnActionClickedListener {
 
-    public static final String EXTRA_VIDEO = "extra_video";
+    public static final String EXTRA_NOTICIA = "extra_noticia";
 
     public static final long ACTION_WATCH = 1;
 
-    private Video mVideo;
+    private Noticia mNoticia;
 
     private DetailsOverviewRow mRow;
 
@@ -61,9 +61,9 @@ public class VideoDetailsFragment extends DetailsFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mVideo = (Video) getActivity().getIntent().getSerializableExtra( EXTRA_VIDEO );
+        mNoticia = (Noticia) getActivity().getIntent().getSerializableExtra( EXTRA_NOTICIA );
 
-        mRow = new DetailsOverviewRow( mVideo );
+        mRow = new DetailsOverviewRow( mNoticia );
 
         initActions();
 
@@ -74,7 +74,7 @@ public class VideoDetailsFragment extends DetailsFragment
         loadRelatedMedia(adapter);
         setAdapter(adapter);
 
-        Picasso.with(getActivity()).load(mVideo.getPoster()).resize(274, 274).into(target);
+        Picasso.with(getActivity()).load(mNoticia.getPoster()).resize(274, 274).into(target);
         setOnItemViewClickedListener(this);
     }
 
@@ -97,31 +97,26 @@ public class VideoDetailsFragment extends DetailsFragment
         @Override
         protected void onBindDescription(
                 AbstractDetailsDescriptionPresenter.ViewHolder viewHolder, Object item) {
-            Video video = (Video) item;
-            if (video != null) {
-                viewHolder.getTitle().setText(video.getTitle());
-                viewHolder.getSubtitle().setText(video.getCategory());
-                viewHolder.getBody().setText(video.getDescription());
+            Noticia noticia = (Noticia) item;
+            if (noticia != null) {
+                viewHolder.getTitle().setText(noticia.getTitle());
+                viewHolder.getSubtitle().setText(noticia.getCategory());
+                viewHolder.getBody().setText(noticia.getDescription());
             }
         }
     }
 
     private void initActions() {
-        //addAction has been deprecated
         mRow.setActionsAdapter(new SparseArrayObjectAdapter() {
             @Override
             public int size() {
-                return 3;
+                return 1;
             }
 
             @Override
             public Object get(int position) {
                 if(position == 0) {
-                    return new Action(ACTION_WATCH, "Watch", "");
-                } else if( position == 1 ) {
-                    return new Action( 42, "Rent", "Line 2" );
-                } else if( position == 2 ) {
-                    return new Action( 42, "Preview", "" );
+                    return new Action(ACTION_WATCH, "Ver vídeo", "");
                 }
 
                 else return null;
@@ -131,18 +126,18 @@ public class VideoDetailsFragment extends DetailsFragment
 
     private void loadRelatedMedia( ArrayObjectAdapter adapter ) {
 
-        String json = Utils.loadJSONFromResource( getActivity(), R.raw.videos );
+        String json = Utils.loadJSONFromResource( getActivity(), R.raw.noticias);
         Gson gson = new Gson();
-        Type collection = new TypeToken<ArrayList<Video>>(){}.getType();
-        List<Video> videos = gson.fromJson( json, collection );
-        if( videos == null )
+        Type collection = new TypeToken<ArrayList<Noticia>>(){}.getType();
+        List<Noticia> noticias = gson.fromJson( json, collection );
+        if( noticias == null )
             return;
 
         ArrayObjectAdapter listRowAdapter = new ArrayObjectAdapter( new CardPresenter() );
 
-        for( Video video : videos ) {
-            if( video.getCategory().equals( mVideo.getCategory() ) && !video.getTitle().equals( mVideo.getTitle() ) ) {
-                listRowAdapter.add( video );
+        for( Noticia noticia : noticias ) {
+            if( noticia.getCategory().equals( mNoticia.getCategory() ) && !noticia.getTitle().equals( mNoticia.getTitle() ) ) {
+                listRowAdapter.add( noticia );
             }
         }
 
@@ -152,10 +147,10 @@ public class VideoDetailsFragment extends DetailsFragment
 
     @Override
     public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder mRowViewHolder, Row mRow) {
-        if( item instanceof Video ) {
-            Video video = (Video) item;
-            Intent intent = new Intent( getActivity(), VideoDetailsActivity.class );
-            intent.putExtra( VideoDetailsFragment.EXTRA_VIDEO, video );
+        if( item instanceof Noticia) {
+            Noticia noticia = (Noticia) item;
+            Intent intent = new Intent( getActivity(), NoticiaDetailsActivity.class );
+            intent.putExtra( NoticiaDetailsFragment.EXTRA_NOTICIA, noticia );
             startActivity( intent );
         }
     }
@@ -164,7 +159,7 @@ public class VideoDetailsFragment extends DetailsFragment
     public void onActionClicked(Action action) {
         if( action.getId() == ACTION_WATCH ) {
             Intent intent = new Intent(getActivity(), PlayerActivity.class);
-            intent.putExtra(VideoDetailsFragment.EXTRA_VIDEO, mVideo);
+            intent.putExtra(NoticiaDetailsFragment.EXTRA_NOTICIA, mNoticia);
             startActivity(intent);
         } else {
             Toast.makeText(getActivity(), "Action", Toast.LENGTH_SHORT).show();
