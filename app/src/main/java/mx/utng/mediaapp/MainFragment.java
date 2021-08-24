@@ -29,7 +29,7 @@ public class MainFragment extends BrowseFragment implements OnItemViewClickedLis
         loadData();
         loadRows();
         setOnItemViewClickedListener( this );
-        setTitle("UTNG Movies Player");
+        setTitle("TV NEWS");
         setHeadersState( HEADERS_ENABLED );
         setHeadersTransitionOnBackEnabled( true );
     }
